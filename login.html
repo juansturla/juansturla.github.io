@@ -22,7 +22,8 @@
       <script>
           const twitchLinkButton = document.getElementById('connectToTwitchButton');
           var queryString = window.location.hash;
-          queryString = queryString.replace('#', '&');
+          window.location.
+              queryString = queryString.replace('#', '&');
           const urlParams = new URLSearchParams(queryString);
           if (urlParams.has('access_token')) {
               window.location = window.location.hostname;
