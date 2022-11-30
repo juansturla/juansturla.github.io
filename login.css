@@ -46,3 +46,8 @@ fieldset[disabled] .btn-twitch.active {
   color: #6441A5;
   background-color: #FFFFFF;
 }
+
+
+body { padding: 0; margin: 0 }
+#unity-container { position: absolute }
+#unity-container.unity-desktop { left: 50%; top: 50%; transform: translate(-50%, -50%); }
