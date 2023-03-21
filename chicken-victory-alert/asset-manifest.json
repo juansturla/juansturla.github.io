@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "https://juansturla.github.io/chicken-victory-alert/static/css/main.2a36829e.chunk.css",
+    "main.js": "https://juansturla.github.io/chicken-victory-alert/static/js/main.77b2029b.chunk.js",
+    "main.js.map": "https://juansturla.github.io/chicken-victory-alert/static/js/main.77b2029b.chunk.js.map",
+    "runtime-main.js": "https://juansturla.github.io/chicken-victory-alert/static/js/runtime-main.758a3be9.js",
+    "runtime-main.js.map": "https://juansturla.github.io/chicken-victory-alert/static/js/runtime-main.758a3be9.js.map",
+    "static/js/2.e6b3258b.chunk.js": "https://juansturla.github.io/chicken-victory-alert/static/js/2.e6b3258b.chunk.js",
+    "static/js/2.e6b3258b.chunk.js.map": "https://juansturla.github.io/chicken-victory-alert/static/js/2.e6b3258b.chunk.js.map",
+    "index.html": "https://juansturla.github.io/chicken-victory-alert/index.html",
+    "static/css/main.2a36829e.chunk.css.map": "https://juansturla.github.io/chicken-victory-alert/static/css/main.2a36829e.chunk.css.map",
+    "static/js/2.e6b3258b.chunk.js.LICENSE.txt": "https://juansturla.github.io/chicken-victory-alert/static/js/2.e6b3258b.chunk.js.LICENSE.txt",
+    "static/media/fgo-tamamo.f03cc0c0.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/fgo-tamamo.f03cc0c0.gif",
+    "static/media/jeanne.85997f6b.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/jeanne.85997f6b.gif",
+    "static/media/tam_0502.4998ff7b.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/tam_0502.4998ff7b.wav"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.758a3be9.js",
+    "static/js/2.e6b3258b.chunk.js",
+    "static/css/main.2a36829e.chunk.css",
+    "static/js/main.77b2029b.chunk.js"
+  ]
+}
