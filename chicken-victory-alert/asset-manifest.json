@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "https://juansturla.github.io/chicken-victory-alert/static/css/main.2a36829e.chunk.css",
-    "main.js": "https://juansturla.github.io/chicken-victory-alert/static/js/main.9167e1c4.chunk.js",
-    "main.js.map": "https://juansturla.github.io/chicken-victory-alert/static/js/main.9167e1c4.chunk.js.map",
+    "main.js": "https://juansturla.github.io/chicken-victory-alert/static/js/main.a994f888.chunk.js",
+    "main.js.map": "https://juansturla.github.io/chicken-victory-alert/static/js/main.a994f888.chunk.js.map",
     "runtime-main.js": "https://juansturla.github.io/chicken-victory-alert/static/js/runtime-main.758a3be9.js",
     "runtime-main.js.map": "https://juansturla.github.io/chicken-victory-alert/static/js/runtime-main.758a3be9.js.map",
     "static/js/2.e6b3258b.chunk.js": "https://juansturla.github.io/chicken-victory-alert/static/js/2.e6b3258b.chunk.js",
@@ -10,14 +10,25 @@
     "index.html": "https://juansturla.github.io/chicken-victory-alert/index.html",
     "static/css/main.2a36829e.chunk.css.map": "https://juansturla.github.io/chicken-victory-alert/static/css/main.2a36829e.chunk.css.map",
     "static/js/2.e6b3258b.chunk.js.LICENSE.txt": "https://juansturla.github.io/chicken-victory-alert/static/js/2.e6b3258b.chunk.js.LICENSE.txt",
-    "static/media/fgo-tamamo.f03cc0c0.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/fgo-tamamo.f03cc0c0.gif",
-    "static/media/jeanne.85997f6b.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/jeanne.85997f6b.gif",
-    "static/media/tam_0502.4998ff7b.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/tam_0502.4998ff7b.wav"
+    "static/media/anime-chibi.6a0c4915.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/anime-chibi.6a0c4915.gif",
+    "static/media/gil-fadeout.62e7254b.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/gil-fadeout.62e7254b.gif",
+    "static/media/gil-throwing-money.c4719165.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/gil-throwing-money.c4719165.gif",
+    "static/media/gil_caster_laugh.27a87023.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/gil_caster_laugh.27a87023.wav",
+    "static/media/gil_caster_laugh.6f24a473.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/gil_caster_laugh.6f24a473.gif",
+    "static/media/gil_jum.2175cfc4.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/gil_jum.2175cfc4.wav",
+    "static/media/gil_laugh copy.b7beea92.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/gil_laugh copy.b7beea92.wav",
+    "static/media/gil_laugh2.cf194821.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/gil_laugh2.cf194821.wav",
+    "static/media/spinning-tamamo.4f918e65.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/spinning-tamamo.4f918e65.gif",
+    "static/media/tamamo_dance.e9259374.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/tamamo_dance.e9259374.gif",
+    "static/media/tamamo_defeatmaybe_sorrymaster.863263c5.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/tamamo_defeatmaybe_sorrymaster.863263c5.wav",
+    "static/media/tamamo_levelup2.660f5a8d.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/tamamo_levelup2.660f5a8d.wav",
+    "static/media/tamamo_perfect.32c988f6.wav": "https://juansturla.github.io/chicken-victory-alert/static/media/tamamo_perfect.32c988f6.wav",
+    "static/media/umad.4aef1d4a.gif": "https://juansturla.github.io/chicken-victory-alert/static/media/umad.4aef1d4a.gif"
   },
   "entrypoints": [
     "static/js/runtime-main.758a3be9.js",
     "static/js/2.e6b3258b.chunk.js",
     "static/css/main.2a36829e.chunk.css",
-    "static/js/main.9167e1c4.chunk.js"
+    "static/js/main.a994f888.chunk.js"
   ]
 }
