@@ -14,13 +14,13 @@
     <div id="unity-container" class="unity-desktop">
       <a>The game needs your Twitch permission to run</a>
       <br />
-      <a>We only need permissions to read the chat</a>
+      <a>We only moderator permissions to hide the people that guessed in the game</a>
       <br />
       <br />
       <button type="button"
               id="connectToTwitchButton"
               class="btn btn-twitch"
-              onclick="window.location='https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=r4htw0tkj8vjq4gaqod6dgmz8apuw1&redirect_uri=http%3A%2F%2Flocalhost%3A58414%2F&scope=&chat:read';"
+              onclick="window.location='https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=r4htw0tkj8vjq4gaqod6dgmz8apuw1&redirect_uri=http%3A%2F%2Flocalhost%3A58414%2F&scope=&chat:read+moderator:manage:chat_messages+chat:edit';"
               >
           <i class="fa fa-1x fa-twitch"></i> Connect with Twitch
       </button>
@@ -45,7 +45,7 @@
                       "&force_verify=true" +
                       "&redirect_uri=" +
                       encodeURIComponent(window.location.origin) + "/" +
-                      "&scope=chat:read'"
+                      "&scope=chat:read+moderator:manage:chat_messages+chat:edit'"
                   );
           }</script>
         </div>
