@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/static/css/main.87a624dd.css",
-    "main.js": "/static/js/main.5892ff43.js",
-    "static/js/787.43b8efaf.chunk.js": "/static/js/787.43b8efaf.chunk.js",
-    "static/media/flor-violeta.svg": "/static/media/flor-violeta.5ee97431cae35ed9a827c681292a4604.svg",
-    "static/media/hojas.svg": "/static/media/hojas.40e747e7ed0bcf76ffddbd3e73ade622.svg",
-    "static/media/flor-azul.svg": "/static/media/flor-azul.b6e7a878c16cd7cc5a5dbd24a06099ff.svg",
-    "static/media/flor-violeta2.svg": "/static/media/flor-violeta2.2765c03d0259ab6241ffc9602d5e9f0d.svg",
-    "static/media/pollo.svg": "/static/media/pollo.14f88caa19c6d2f1ab666a84faaeff29.svg",
-    "static/media/polla2.svg": "/static/media/polla2.a6057d243329e012bbc62640e279b1d5.svg",
-    "static/media/hoja.svg": "/static/media/hoja.6402c77fde1cb269f265c448568eb8bf.svg",
-    "index.html": "/index.html",
-    "static/media/heart.svg": "/static/media/heart.eef32d3e23e7f2c1d177e7e999a7a9b2.svg",
-    "main.87a624dd.css.map": "/static/css/main.87a624dd.css.map",
-    "main.5892ff43.js.map": "/static/js/main.5892ff43.js.map",
-    "787.43b8efaf.chunk.js.map": "/static/js/787.43b8efaf.chunk.js.map"
+    "main.css": "/electrochicken/static/css/main.87a624dd.css",
+    "main.js": "/electrochicken/static/js/main.75a826d7.js",
+    "static/js/787.43b8efaf.chunk.js": "/electrochicken/static/js/787.43b8efaf.chunk.js",
+    "static/media/flor-violeta.svg": "/electrochicken/static/media/flor-violeta.5ee97431cae35ed9a827c681292a4604.svg",
+    "static/media/hojas.svg": "/electrochicken/static/media/hojas.40e747e7ed0bcf76ffddbd3e73ade622.svg",
+    "static/media/flor-azul.svg": "/electrochicken/static/media/flor-azul.b6e7a878c16cd7cc5a5dbd24a06099ff.svg",
+    "static/media/flor-violeta2.svg": "/electrochicken/static/media/flor-violeta2.2765c03d0259ab6241ffc9602d5e9f0d.svg",
+    "static/media/pollo.svg": "/electrochicken/static/media/pollo.14f88caa19c6d2f1ab666a84faaeff29.svg",
+    "static/media/polla2.svg": "/electrochicken/static/media/polla2.a6057d243329e012bbc62640e279b1d5.svg",
+    "static/media/hoja.svg": "/electrochicken/static/media/hoja.6402c77fde1cb269f265c448568eb8bf.svg",
+    "index.html": "/electrochicken/index.html",
+    "static/media/heart.svg": "/electrochicken/static/media/heart.eef32d3e23e7f2c1d177e7e999a7a9b2.svg",
+    "main.87a624dd.css.map": "/electrochicken/static/css/main.87a624dd.css.map",
+    "main.75a826d7.js.map": "/electrochicken/static/js/main.75a826d7.js.map",
+    "787.43b8efaf.chunk.js.map": "/electrochicken/static/js/787.43b8efaf.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.87a624dd.css",
-    "static/js/main.5892ff43.js"
+    "static/js/main.75a826d7.js"
   ]
 }
