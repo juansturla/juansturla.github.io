@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Gallega - Barcode Scanner</title>
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        #reader {
+            width: 100%;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        #reader__scan_region video {
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        function App() {
+            const [products, setProducts] = useState({});
+            const [scannedProduct, setScannedProduct] = useState(null);
+            const [lastBarcode, setLastBarcode] = useState("");
+            const [isScannerActive, setIsScannerActive] = useState(false);
+            const [loading, setLoading] = useState(true);
+            const [error, setError] = useState(null);
+            
+            const html5QrCodeRef = useRef(null);
+
+            useEffect(() => {
+                // Fetch products data
+                fetch('products.json')
+                    .then(response => {
+                        if (!response.ok) throw new Error('Failed to load products database');
+                        return response.json();
+                    })
+                    .then(data => {
+                        setProducts(data);
+                        setLoading(false);
+                    })
+                    .catch(err => {
+                        console.error(err);
+                        setError(err.message);
+                        setLoading(false);
+                    });
+            }, []);
+
+            const startScanner = () => {
+                setIsScannerActive(true);
+                setScannedProduct(null);
+                
+                setTimeout(() => {
+                    const html5QrCode = new Html5Qrcode("reader");
+                    html5QrCodeRef.current = html5QrCode;
+                    
+                    const config = { fps: 10, qrbox: { width: 250, height: 150 } };
+                    
+                    html5QrCode.start(
+                        { facingMode: "environment" }, 
+                        config, 
+                        (decodedText) => {
+                            // On success
+                            handleScan(decodedText);
+                        },
+                        (errorMessage) => {
+                            // parse error, ignore it
+                        }
+                    ).catch(err => {
+                        console.error("Unable to start scanner", err);
+                        setError("Camera access denied or not available. Ensure you are using HTTPS.");
+                        setIsScannerActive(false);
+                    });
+                }, 100);
+            };
+
+            const stopScanner = () => {
+                if (html5QrCodeRef.current) {
+                    html5QrCodeRef.current.stop().then(() => {
+                        setIsScannerActive(false);
+                    }).catch(err => console.error("Error stopping scanner", err));
+                } else {
+                    setIsScannerActive(false);
+                }
+            };
+
+            const handleScan = (barcode) => {
+                setLastBarcode(barcode);
+                if (products[barcode]) {
+                    setScannedProduct(products[barcode]);
+                    stopScanner();
+                    // Vibrate if supported
+                    if (navigator.vibrate) navigator.vibrate(200);
+                }
+            };
+
+            if (loading) {
+                return (
+                    <div class="flex items-center justify-center h-screen">
+                        <div class="text-xl font-semibold text-gray-600">Loading product database...</div>
+                    </div>
+                );
+            }
+
+            return (
+                <div class="max-w-md mx-auto p-4 flex flex-col min-h-screen">
+                    <header class="text-center mb-6">
+                        <h1 class="text-3xl font-bold text-red-600">La Gallega</h1>
+                        <p class="text-gray-600">Barcode Product Finder</p>
+                    </header>
+
+                    {error && (
+                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
+                            {error}
+                        </div>
+                    )}
+
+                    <main class="flex-grow">
+                        {!isScannerActive && !scannedProduct && (
+                            <div class="flex flex-col items-center justify-center space-y-4 mt-10">
+                                <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+                                    </svg>
+                                </div>
+                                <button 
+                                    onClick={startScanner}
+                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-transform active:scale-95 w-full text-lg"
+                                >
+                                    Start Scanning
+                                </button>
+                                <p class="text-sm text-gray-500">Database: {Object.keys(products).length} products</p>
+                            </div>
+                        )}
+
+                        {isScannerActive && (
+                            <div class="space-y-4">
+                                <div id="reader"></div>
+                                <button 
+                                    onClick={stopScanner}
+                                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded w-full"
+                                >
+                                    Cancel
+                                </button>
+                                <div class="text-center text-gray-600 italic">
+                                    Align barcode within the rectangle
+                                </div>
+                            </div>
+                        )}
+
+                        {scannedProduct && (
+                            <div class="bg-white rounded-xl shadow-xl overflow-hidden animate-bounce-in">
+                                {scannedProduct.image_url && (
+                                    <div class="h-64 bg-white flex items-center justify-center p-4">
+                                        <img 
+                                            src={scannedProduct.image_url} 
+                                            alt={scannedProduct.name}
+                                            class="max-h-full max-w-full object-contain"
+                                        />
+                                    </div>
+                                )}
+                                <div class="p-6 border-t border-gray-100">
+                                    <div class="text-sm text-gray-400 mb-1">Barcode: {scannedProduct.barcode}</div>
+                                    <h2 class="text-xl font-bold text-gray-800 mb-2 leading-tight uppercase">
+                                        {scannedProduct.name}
+                                    </h2>
+                                    <div class="flex justify-between items-end mt-4">
+                                        <div>
+                                            <div class="text-xs text-gray-400 uppercase tracking-wider">Category</div>
+                                            <div class="text-gray-600">{scannedProduct.category}</div>
+                                        </div>
+                                        <div class="text-right">
+                                            <div class="text-3xl font-black text-green-600">
+                                                ${scannedProduct.price}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <button 
+                                        onClick={startScanner}
+                                        class="mt-8 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg w-full transition-colors"
+                                    >
+                                        Scan Another
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                        
+                        {!isScannerActive && !scannedProduct && lastBarcode && !products[lastBarcode] && (
+                             <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
+                                <p class="font-bold">Not Found</p>
+                                <p>Barcode <span class="font-mono">{lastBarcode}</span> was not found in our database.</p>
+                                <button onClick={() => setLastBarcode("")} class="mt-2 text-sm underline">Dismiss</button>
+                             </div>
+                        )}
+                    </main>
+
+                    <footer class="mt-10 py-6 text-center text-gray-400 text-xs border-t border-gray-200">
+                        &copy; 2026 La Gallega Product Finder
+                    </footer>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
