@@ -1,353 +1,101 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>La Gallega - Barcode Scanner</title>
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
-    <style>
-        #reader {
-            width: 100%;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        #reader__scan_region video {
-            border-radius: 8px;
-        }
-        @keyframes slideDown {
-            from { transform: translateY(-20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        .animate-slide-down {
-            animation: slideDown 0.3s ease-out forwards;
-        }
-        @keyframes bounceIn {
-            0% { transform: scale(0.9); opacity: 0; }
-            70% { transform: scale(1.05); }
-            100% { transform: scale(1); opacity: 1; }
-        }
-        .animate-bounce-in {
-            animation: bounceIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
-        }
-    </style>
-</head>
-<body class="bg-gray-100 min-h-screen">
-    <div id="root"></div>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>StreamTheDots</title>
+    <link rel="shortcut icon" href="TemplateData/favicon.ico">
+    <link rel="stylesheet" href="index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="unity-webview.js"></script>
+  </head>
+  <body>
+    <div id="unity-container" class="unity-desktop">
+      <canvas id="unity-canvas"></canvas>
+      <div id="unity-loading-bar">
+        <div id="unity-logo"></div>
+        <div id="unity-progress-bar-empty">
+          <div id="unity-progress-bar-full"></div>
+        </div>
+      </div>
+      <div id="unity-footer">
+        <div id="unity-build-title">
+          <a href="https://forms.gle/Cpnczf8ayf73KxcG9">We are taking Words suggestions!</a>
+        </div>
+      </div>
+    </div>
+    <script>
+      const twitchLink =document.getElementById('connectToTwitch');
+      var queryString = window.location.hash;
+      queryString = queryString.replace('#','&');
+      console.log(queryString);
+      const urlParams = new URLSearchParams(queryString);
+      if(!urlParams.has('access_token'))
+      {
+          window.location = window.location.origin + "/login.html";
+      }
 
-    <script type="text/babel">
-        const { useState, useEffect, useRef } = React;
+      var buildUrl = "Build";
+      var loaderUrl = buildUrl + "/juansturla.github.io.loader.js";
+      var config = {
+        dataUrl: buildUrl + "/juansturla.github.io.data",
+        frameworkUrl: buildUrl + "/juansturla.github.io.framework.js",
+        codeUrl: buildUrl + "/juansturla.github.io.wasm",
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "juansturla",
+        productName: "StreamTheDots",
+        productVersion: "1.0",
+      };
 
-        function App() {
-            const [products, setProducts] = useState({});
-            const [scannedProduct, setScannedProduct] = useState(null);
-            const [lastBarcode, setLastBarcode] = useState("");
-            const [isScannerActive, setIsScannerActive] = useState(false);
-            const [loading, setLoading] = useState(true);
-            const [error, setError] = useState(null);
-            const [cart, setCart] = useState(() => {
-                const savedCart = localStorage.getItem('lagallega_cart');
-                return savedCart ? JSON.parse(savedCart) : [];
-            });
-            const [showCart, setShowCart] = useState(false);
-            
-            const html5QrCodeRef = useRef(null);
+      var container = document.querySelector("#unity-container");
+      var canvas = document.querySelector("#unity-canvas");
+      var loadingBar = document.querySelector("#unity-loading-bar");
+      var progressBarFull = document.querySelector("#unity-progress-bar-full");
+      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
+      var width0 = "960px";
+      var height0 = "600px";
 
-            useEffect(() => {
-                localStorage.setItem('lagallega_cart', JSON.stringify(cart));
-            }, [cart]);
+      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+        container.className = "unity-mobile";
+        config.devicePixelRatio = 1;
+      } else {
+        canvas.style.width = "960px";
+        canvas.style.height = "600px";
+      }
+      loadingBar.style.display = "block";
 
-            useEffect(() => {
-                // Fetch products data
-                fetch('products.json')
-                    .then(response => {
-                        if (!response.ok) throw new Error('Failed to load products database');
-                        return response.json();
-                    })
-                    .then(data => {
-                        setProducts(data);
-                        setLoading(false);
-                    })
-                    .catch(err => {
-                        console.error(err);
-                        setError(err.message);
-                        setLoading(false);
-                    });
-            }, []);
-
-            const startScanner = () => {
-                setIsScannerActive(true);
-                setScannedProduct(null);
-                
-                setTimeout(() => {
-                    const html5QrCode = new Html5Qrcode("reader");
-                    html5QrCodeRef.current = html5QrCode;
-                    
-                    const config = { fps: 10, qrbox: { width: 250, height: 150 } };
-                    
-                    html5QrCode.start(
-                        { facingMode: "environment" }, 
-                        config, 
-                        (decodedText) => {
-                            // On success
-                            handleScan(decodedText);
-                        },
-                        (errorMessage) => {
-                            // parse error, ignore it
-                        }
-                    ).catch(err => {
-                        console.error("Unable to start scanner", err);
-                        setError("Camera access denied or not available. Ensure you are using HTTPS.");
-                        setIsScannerActive(false);
-                    });
-                }, 100);
-            };
-
-            const stopScanner = () => {
-                if (html5QrCodeRef.current) {
-                    html5QrCodeRef.current.stop().then(() => {
-                        setIsScannerActive(false);
-                    }).catch(err => console.error("Error stopping scanner", err));
-                } else {
-                    setIsScannerActive(false);
-                }
-            };
-
-            const handleScan = (barcode) => {
-                setLastBarcode(barcode);
-                if (products[barcode]) {
-                    setScannedProduct(products[barcode]);
-                    stopScanner();
-                    // Vibrate if supported
-                    if (navigator.vibrate) navigator.vibrate(200);
-                }
-            };
-
-            const addToCart = (product) => {
-                setCart(prevCart => {
-                    const existingItem = prevCart.find(item => item.barcode === product.barcode);
-                    if (existingItem) {
-                        return prevCart.map(item => 
-                            item.barcode === product.barcode 
-                            ? { ...item, quantity: item.quantity + 1 } 
-                            : item
-                        );
-                    }
-                    return [...prevCart, { ...product, quantity: 1 }];
-                });
-                setScannedProduct(null);
-                setShowCart(true);
-            };
-
-            const updateQuantity = (barcode, delta) => {
-                setCart(prevCart => {
-                    return prevCart.map(item => {
-                        if (item.barcode === barcode) {
-                            const newQuantity = Math.max(0, item.quantity + delta);
-                            return { ...item, quantity: newQuantity };
-                        }
-                        return item;
-                    }).filter(item => item.quantity > 0);
-                });
-            };
-
-            const clearCart = () => {
-                if (confirm("Are you sure you want to clear the cart?")) {
-                    setCart([]);
-                }
-            };
-
-            const cartTotal = cart.reduce((sum, item) => {
-                const price = parseFloat(item.price.replace(/\./g, '').replace(',', '.'));
-                return sum + (price * item.quantity);
-            }, 0);
-
-            const formatCurrency = (val) => {
-                return new Intl.NumberFormat('es-AR', { style: 'currency', currency: 'ARS' }).format(val);
-            };
-
-            if (loading) {
-                return (
-                    <div class="flex items-center justify-center h-screen">
-                        <div class="text-xl font-semibold text-gray-600">Loading product database...</div>
-                    </div>
-                );
-            }
-
-            return (
-                <div class="max-w-md mx-auto p-4 flex flex-col min-h-screen">
-                    <header class="text-center mb-6 flex justify-between items-center">
-                        <div class="text-left">
-                            <h1 class="text-3xl font-bold text-red-600">La Gallega</h1>
-                            <p class="text-gray-600 text-sm">Barcode Product Finder</p>
-                        </div>
-                        <button 
-                            onClick={() => setShowCart(!showCart)}
-                            class="relative bg-white p-3 rounded-full shadow-md text-gray-700 hover:text-red-600 transition-colors"
-                        >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                            {cart.length > 0 && (
-                                <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
-                                    {cart.reduce((a, b) => a + b.quantity, 0)}
-                                </span>
-                            )}
-                        </button>
-                    </header>
-
-                    {showCart && (
-                        <div class="bg-white rounded-xl shadow-lg mb-6 overflow-hidden border border-gray-200 animate-slide-down">
-                            <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
-                                <h3 class="font-bold text-gray-700">Your Cart</h3>
-                                <button onClick={clearCart} class="text-xs text-red-500 font-semibold hover:underline">Clear All</button>
-                            </div>
-                            <div class="max-h-80 overflow-y-auto">
-                                {cart.length === 0 ? (
-                                    <div class="p-8 text-center text-gray-400">Your cart is empty</div>
-                                ) : (
-                                    <ul class="divide-y divide-gray-100">
-                                        {cart.map(item => (
-                                            <li key={item.barcode} class="p-4 flex gap-3">
-                                                {item.image_url && (
-                                                    <img src={item.image_url} class="w-12 h-12 object-contain bg-white rounded shadow-sm" />
-                                                )}
-                                                <div class="flex-grow">
-                                                    <div class="text-xs font-bold text-gray-800 uppercase line-clamp-1">{item.name}</div>
-                                                    <div class="text-xs text-gray-500">${item.price} each</div>
-                                                    <div class="flex items-center mt-2 gap-3">
-                                                        <div class="flex items-center border rounded">
-                                                            <button onClick={() => updateQuantity(item.barcode, -1)} class="px-2 py-1 text-gray-500 hover:bg-gray-100">-</button>
-                                                            <span class="px-3 py-1 text-sm font-semibold">{item.quantity}</span>
-                                                            <button onClick={() => updateQuantity(item.barcode, 1)} class="px-2 py-1 text-gray-500 hover:bg-gray-100">+</button>
-                                                        </div>
-                                                        <div class="text-sm font-bold text-green-600 ml-auto">
-                                                            {formatCurrency(item.quantity * parseFloat(item.price.replace(/\./g, '').replace(',', '.')))}
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                )}
-                            </div>
-                            {cart.length > 0 && (
-                                <div class="p-4 bg-gray-50 border-t flex justify-between items-center">
-                                    <div class="text-gray-500 font-semibold">Total:</div>
-                                    <div class="text-xl font-black text-green-600">{formatCurrency(cartTotal)}</div>
-                                </div>
-                            )}
-                            <div class="p-2 bg-gray-100 text-center">
-                                <button onClick={() => setShowCart(false)} class="text-xs text-gray-500 py-1 w-full">Close Cart</button>
-                            </div>
-                        </div>
-                    )}
-
-                    {error && (
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
-                            {error}
-                        </div>
-                    )}
-
-                    <main class="flex-grow">
-                        {!isScannerActive && !scannedProduct && (
-                            <div class="flex flex-col items-center justify-center space-y-4 mt-10">
-                                <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
-                                    </svg>
-                                </div>
-                                <button 
-                                    onClick={startScanner}
-                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-transform active:scale-95 w-full text-lg"
-                                >
-                                    Start Scanning
-                                </button>
-                                <p class="text-sm text-gray-500">Database: {Object.keys(products).length} products</p>
-                            </div>
-                        )}
-
-                        {isScannerActive && (
-                            <div class="space-y-4">
-                                <div id="reader"></div>
-                                <button 
-                                    onClick={stopScanner}
-                                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded w-full"
-                                >
-                                    Cancel
-                                </button>
-                                <div class="text-center text-gray-600 italic">
-                                    Align barcode within the rectangle
-                                </div>
-                            </div>
-                        )}
-
-                        {scannedProduct && (
-                            <div class="bg-white rounded-xl shadow-xl overflow-hidden animate-bounce-in">
-                                {scannedProduct.image_url && (
-                                    <div class="h-64 bg-white flex items-center justify-center p-4">
-                                        <img 
-                                            src={scannedProduct.image_url} 
-                                            alt={scannedProduct.name}
-                                            class="max-h-full max-w-full object-contain"
-                                        />
-                                    </div>
-                                )}
-                                <div class="p-6 border-t border-gray-100">
-                                    <div class="text-sm text-gray-400 mb-1">Barcode: {scannedProduct.barcode}</div>
-                                    <h2 class="text-xl font-bold text-gray-800 mb-2 leading-tight uppercase">
-                                        {scannedProduct.name}
-                                    </h2>
-                                    <div class="flex justify-between items-end mt-4">
-                                        <div>
-                                            <div class="text-xs text-gray-400 uppercase tracking-wider">Category</div>
-                                            <div class="text-gray-600">{scannedProduct.category}</div>
-                                        </div>
-                                        <div class="text-right">
-                                            <div class="text-3xl font-black text-green-600">
-                                                ${scannedProduct.price}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <button 
-                                        onClick={() => addToCart(scannedProduct)}
-                                        class="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg w-full transition-colors mb-2"
-                                    >
-                                        Add to Cart
-                                    </button>
-
-                                    <button 
-                                        onClick={startScanner}
-                                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg w-full transition-colors"
-                                    >
-                                        Scan Another
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-                        
-                        {!isScannerActive && !scannedProduct && lastBarcode && !products[lastBarcode] && (
-                             <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
-                                <p class="font-bold">Not Found</p>
-                                <p>Barcode <span class="font-mono">{lastBarcode}</span> was not found in our database.</p>
-                                <button onClick={() => setLastBarcode("")} class="mt-2 text-sm underline">Dismiss</button>
-                             </div>
-                        )}
-                    </main>
-
-                    <footer class="mt-10 py-6 text-center text-gray-400 text-xs border-t border-gray-200">
-                        &copy; 2026 La Gallega Product Finder
-                    </footer>
-                </div>
-            );
-        }
-
-        const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<App />);
+      document.addEventListener(
+        'fullscreenchange',
+        function() {
+          var p = document.getElementById('unity-container');
+          var c = document.getElementById('unity-canvas');
+          if (document.fullscreenElement) {
+            width0 = c.style.width;
+            height0 = c.style.height;
+            setTimeout(
+              function() {
+                c.style.width = getComputedStyle(p).width;
+                c.style.height = getComputedStyle(p).height;
+              },
+              250);
+          } else {
+            c.style.width = width0;
+            c.style.height = height0;
+          }
+        });
+      var script = document.createElement("script");
+      script.src = loaderUrl;
+      script.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          progressBarFull.style.width = 100 * progress + "%";
+        }).then((unityInstance) => {
+          window.unityInstance = unityInstance;
+          loadingBar.style.display = "none";
+        }).catch((message) => {
+          alert(message);
+        });
+      };
+            document.body.appendChild(script);
     </script>
-</body>
+  </body>
 </html>
