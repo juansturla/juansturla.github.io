@@ -38,7 +38,7 @@
 <body class="bg-gray-100 min-h-screen">
     <div id="root"></div>
 
-    <script type="text/babel">
+    <script type="text/babel" data-presets="react">
         const { useState, useEffect, useRef } = React;
 
         function App() {
@@ -171,28 +171,28 @@
 
             if (loading) {
                 return (
-                    <div class="flex items-center justify-center h-screen">
-                        <div class="text-xl font-semibold text-gray-600">Loading product database...</div>
+                    <div className="flex items-center justify-center h-screen">
+                        <div className="text-xl font-semibold text-gray-600">Loading product database...</div>
                     </div>
                 );
             }
 
             return (
-                <div class="max-w-md mx-auto p-4 flex flex-col min-h-screen">
-                    <header class="text-center mb-6 flex justify-between items-center">
-                        <div class="text-left">
-                            <h1 class="text-3xl font-bold text-red-600">La Gallega</h1>
-                            <p class="text-gray-600 text-sm">Barcode Product Finder</p>
+                <div className="max-w-md mx-auto p-4 flex flex-col min-h-screen">
+                    <header className="text-center mb-6 flex justify-between items-center">
+                        <div className="text-left">
+                            <h1 className="text-3xl font-bold text-red-600">La Gallega</h1>
+                            <p className="text-gray-600 text-sm">Barcode Product Finder</p>
                         </div>
                         <button 
                             onClick={() => setShowCart(!showCart)}
-                            class="relative bg-white p-3 rounded-full shadow-md text-gray-700 hover:text-red-600 transition-colors"
+                            className="relative bg-white p-3 rounded-full shadow-md text-gray-700 hover:text-red-600 transition-colors"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                             {cart.length > 0 && (
-                                <span class="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+                                <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">
                                     {cart.reduce((a, b) => a + b.quantity, 0)}
                                 </span>
                             )}
@@ -200,31 +200,31 @@
                     </header>
 
                     {showCart && (
-                        <div class="bg-white rounded-xl shadow-lg mb-6 overflow-hidden border border-gray-200 animate-slide-down">
-                            <div class="p-4 bg-gray-50 border-b flex justify-between items-center">
-                                <h3 class="font-bold text-gray-700">Your Cart</h3>
-                                <button onClick={clearCart} class="text-xs text-red-500 font-semibold hover:underline">Clear All</button>
+                        <div className="bg-white rounded-xl shadow-lg mb-6 overflow-hidden border border-gray-200 animate-slide-down">
+                            <div className="p-4 bg-gray-50 border-b flex justify-between items-center">
+                                <h3 className="font-bold text-gray-700">Your Cart</h3>
+                                <button onClick={clearCart} className="text-xs text-red-500 font-semibold hover:underline">Clear All</button>
                             </div>
-                            <div class="max-h-80 overflow-y-auto">
+                            <div className="max-h-80 overflow-y-auto">
                                 {cart.length === 0 ? (
-                                    <div class="p-8 text-center text-gray-400">Your cart is empty</div>
+                                    <div className="p-8 text-center text-gray-400">Your cart is empty</div>
                                 ) : (
-                                    <ul class="divide-y divide-gray-100">
+                                    <ul className="divide-y divide-gray-100">
                                         {cart.map(item => (
-                                            <li key={item.barcode} class="p-4 flex gap-3">
+                                            <li key={item.barcode} className="p-4 flex gap-3">
                                                 {item.image_url && (
-                                                    <img src={item.image_url} class="w-12 h-12 object-contain bg-white rounded shadow-sm" />
+                                                    <img src={item.image_url} className="w-12 h-12 object-contain bg-white rounded shadow-sm" />
                                                 )}
-                                                <div class="flex-grow">
-                                                    <div class="text-xs font-bold text-gray-800 uppercase line-clamp-1">{item.name}</div>
-                                                    <div class="text-xs text-gray-500">${item.price} each</div>
-                                                    <div class="flex items-center mt-2 gap-3">
-                                                        <div class="flex items-center border rounded">
-                                                            <button onClick={() => updateQuantity(item.barcode, -1)} class="px-2 py-1 text-gray-500 hover:bg-gray-100">-</button>
-                                                            <span class="px-3 py-1 text-sm font-semibold">{item.quantity}</span>
-                                                            <button onClick={() => updateQuantity(item.barcode, 1)} class="px-2 py-1 text-gray-500 hover:bg-gray-100">+</button>
+                                                <div className="flex-grow">
+                                                    <div className="text-xs font-bold text-gray-800 uppercase line-clamp-1">{item.name}</div>
+                                                    <div className="text-xs text-gray-500">${item.price} each</div>
+                                                    <div className="flex items-center mt-2 gap-3">
+                                                        <div className="flex items-center border rounded">
+                                                            <button onClick={() => updateQuantity(item.barcode, -1)} className="px-2 py-1 text-gray-500 hover:bg-gray-100">-</button>
+                                                            <span className="px-3 py-1 text-sm font-semibold">{item.quantity}</span>
+                                                            <button onClick={() => updateQuantity(item.barcode, 1)} className="px-2 py-1 text-gray-500 hover:bg-gray-100">+</button>
                                                         </div>
-                                                        <div class="text-sm font-bold text-green-600 ml-auto">
+                                                        <div className="text-sm font-bold text-green-600 ml-auto">
                                                             {formatCurrency(item.quantity * parseFloat(item.price.replace(/\./g, '').replace(',', '.')))}
                                                         </div>
                                                     </div>
@@ -235,79 +235,79 @@
                                 )}
                             </div>
                             {cart.length > 0 && (
-                                <div class="p-4 bg-gray-50 border-t flex justify-between items-center">
-                                    <div class="text-gray-500 font-semibold">Total:</div>
-                                    <div class="text-xl font-black text-green-600">{formatCurrency(cartTotal)}</div>
+                                <div className="p-4 bg-gray-50 border-t flex justify-between items-center">
+                                    <div className="text-gray-500 font-semibold">Total:</div>
+                                    <div className="text-xl font-black text-green-600">{formatCurrency(cartTotal)}</div>
                                 </div>
                             )}
-                            <div class="p-2 bg-gray-100 text-center">
-                                <button onClick={() => setShowCart(false)} class="text-xs text-gray-500 py-1 w-full">Close Cart</button>
+                            <div className="p-2 bg-gray-100 text-center">
+                                <button onClick={() => setShowCart(false)} className="text-xs text-gray-500 py-1 w-full">Close Cart</button>
                             </div>
                         </div>
                     )}
 
                     {error && (
-                        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
+                        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4 text-center">
                             {error}
                         </div>
                     )}
 
-                    <main class="flex-grow">
+                    <main className="flex-grow">
                         {!isScannerActive && !scannedProduct && (
-                            <div class="flex flex-col items-center justify-center space-y-4 mt-10">
-                                <div class="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <div className="flex flex-col items-center justify-center space-y-4 mt-10">
+                                <div className="w-32 h-32 bg-white rounded-full flex items-center justify-center shadow-lg">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-16 w-16 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 17h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
                                     </svg>
                                 </div>
                                 <button 
                                     onClick={startScanner}
-                                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-transform active:scale-95 w-full text-lg"
+                                    className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-full shadow-lg transition-transform active:scale-95 w-full text-lg"
                                 >
                                     Start Scanning
                                 </button>
-                                <p class="text-sm text-gray-500">Database: {Object.keys(products).length} products</p>
+                                <p className="text-sm text-gray-500">Database: {Object.keys(products).length} products</p>
                             </div>
                         )}
 
                         {isScannerActive && (
-                            <div class="space-y-4">
+                            <div className="space-y-4">
                                 <div id="reader"></div>
                                 <button 
                                     onClick={stopScanner}
-                                    class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded w-full"
+                                    className="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded w-full"
                                 >
                                     Cancel
                                 </button>
-                                <div class="text-center text-gray-600 italic">
+                                <div className="text-center text-gray-600 italic">
                                     Align barcode within the rectangle
                                 </div>
                             </div>
                         )}
 
                         {scannedProduct && (
-                            <div class="bg-white rounded-xl shadow-xl overflow-hidden animate-bounce-in">
+                            <div className="bg-white rounded-xl shadow-xl overflow-hidden animate-bounce-in">
                                 {scannedProduct.image_url && (
-                                    <div class="h-64 bg-white flex items-center justify-center p-4">
+                                    <div className="h-64 bg-white flex items-center justify-center p-4">
                                         <img 
                                             src={scannedProduct.image_url} 
                                             alt={scannedProduct.name}
-                                            class="max-h-full max-w-full object-contain"
+                                            className="max-h-full max-w-full object-contain"
                                         />
                                     </div>
                                 )}
-                                <div class="p-6 border-t border-gray-100">
-                                    <div class="text-sm text-gray-400 mb-1">Barcode: {scannedProduct.barcode}</div>
-                                    <h2 class="text-xl font-bold text-gray-800 mb-2 leading-tight uppercase">
+                                <div className="p-6 border-t border-gray-100">
+                                    <div className="text-sm text-gray-400 mb-1">Barcode: {scannedProduct.barcode}</div>
+                                    <h2 className="text-xl font-bold text-gray-800 mb-2 leading-tight uppercase">
                                         {scannedProduct.name}
                                     </h2>
-                                    <div class="flex justify-between items-end mt-4">
+                                    <div className="flex justify-between items-end mt-4">
                                         <div>
-                                            <div class="text-xs text-gray-400 uppercase tracking-wider">Category</div>
-                                            <div class="text-gray-600">{scannedProduct.category}</div>
+                                            <div className="text-xs text-gray-400 uppercase tracking-wider">Category</div>
+                                            <div className="text-gray-600">{scannedProduct.category}</div>
                                         </div>
-                                        <div class="text-right">
-                                            <div class="text-3xl font-black text-green-600">
+                                        <div className="text-right">
+                                            <div className="text-3xl font-black text-green-600">
                                                 ${scannedProduct.price}
                                             </div>
                                         </div>
@@ -315,14 +315,14 @@
                                     
                                     <button 
                                         onClick={() => addToCart(scannedProduct)}
-                                        class="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg w-full transition-colors mb-2"
+                                        className="mt-8 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg w-full transition-colors mb-2"
                                     >
                                         Add to Cart
                                     </button>
 
                                     <button 
                                         onClick={startScanner}
-                                        class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg w-full transition-colors"
+                                        className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg w-full transition-colors"
                                     >
                                         Scan Another
                                     </button>
@@ -331,15 +331,15 @@
                         )}
                         
                         {!isScannerActive && !scannedProduct && lastBarcode && !products[lastBarcode] && (
-                             <div class="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
-                                <p class="font-bold">Not Found</p>
-                                <p>Barcode <span class="font-mono">{lastBarcode}</span> was not found in our database.</p>
-                                <button onClick={() => setLastBarcode("")} class="mt-2 text-sm underline">Dismiss</button>
+                             <div className="mt-6 p-4 bg-yellow-50 border-l-4 border-yellow-400 text-yellow-700">
+                                <p className="font-bold">Not Found</p>
+                                <p>Barcode <span className="font-mono">{lastBarcode}</span> was not found in our database.</p>
+                                <button onClick={() => setLastBarcode("")} className="mt-2 text-sm underline">Dismiss</button>
                              </div>
                         )}
                     </main>
 
-                    <footer class="mt-10 py-6 text-center text-gray-400 text-xs border-t border-gray-200">
+                    <footer className="mt-10 py-6 text-center text-gray-400 text-xs border-t border-gray-200">
                         &copy; 2026 La Gallega Product Finder
                     </footer>
                 </div>
