@@ -35,7 +35,7 @@
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body className="bg-gray-100 min-h-screen">
     <div id="root"></div>
 
     <script type="text/babel" data-presets="react">
@@ -62,17 +62,20 @@
 
             useEffect(() => {
                 // Fetch products data
+                console.log("Fetching products.json...");
                 fetch('products.json')
                     .then(response => {
+                        console.log("Response received:", response.status);
                         if (!response.ok) throw new Error('Failed to load products database');
                         return response.json();
                     })
                     .then(data => {
+                        console.log("Products loaded:", Object.keys(data).length);
                         setProducts(data);
                         setLoading(false);
                     })
                     .catch(err => {
-                        console.error(err);
+                        console.error("Fetch error:", err);
                         setError(err.message);
                         setLoading(false);
                     });
@@ -93,6 +96,7 @@
                         config, 
                         (decodedText) => {
                             // On success
+                            console.log("Scanned:", decodedText);
                             handleScan(decodedText);
                         },
                         (errorMessage) => {
