@@ -6,7 +6,7 @@
     <title>La Gallega - Barcode Scanner</title>
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.23.10/babel.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/html5-qrcode"></script>
     <style>
@@ -38,7 +38,13 @@
 <body className="bg-gray-100 min-h-screen">
     <div id="root"></div>
 
-    <script type="text/babel" data-presets="react">
+    <script type="text/babel">
+        // Set Babel to classic runtime to avoid 'import' statements
+        Babel.registerPreset("my-preset", {
+          presets: [[Babel.availablePresets["react"], { runtime: "classic" }]],
+        });
+    </script>
+    <script type="text/babel" data-presets="my-preset">
         const { useState, useEffect, useRef } = React;
 
         function App() {
