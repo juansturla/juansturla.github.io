@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>StreamTheDots</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="login.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -20,7 +19,6 @@
       <button type="button"
               id="connectToTwitchButton"
               class="btn btn-twitch"
-              onclick="window.location='https://id.twitch.tv/oauth2/authorize?response_type=token&client_id=r4htw0tkj8vjq4gaqod6dgmz8apuw1&redirect_uri=http%3A%2F%2Flocalhost%3A58414%2F&scope=&chat:read+moderator:manage:chat_messages+chat:edit';"
               >
           <i class="fa fa-1x fa-twitch"></i> Connect with Twitch
       </button>
@@ -28,11 +26,10 @@
       <script>
           const twitchLinkButton = document.getElementById('connectToTwitchButton');
           var queryString = window.location.hash;
-          window.location.
-              queryString = queryString.replace('#', '&');
+          queryString = queryString.replace('#', '&');
           const urlParams = new URLSearchParams(queryString);
           if (urlParams.has('access_token')) {
-              window.location = window.location.hostname;
+              window.location = "index.html" + window.location.hash;
           }
           else {
               twitchLinkButton.setAttribute
@@ -44,7 +41,7 @@
                       "&client_id=r4htw0tkj8vjq4gaqod6dgmz8apuw1" +
                       "&force_verify=true" +
                       "&redirect_uri=" +
-                      encodeURIComponent(window.location.origin) + "/" +
+                      encodeURIComponent(window.location.origin + "/streamthedots/") +
                       "&scope=chat:read+moderator:manage:chat_messages+chat:edit'"
                   );
           }</script>

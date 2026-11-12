@@ -4,7 +4,6 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title>StreamTheDots</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico">
     <link rel="stylesheet" href="index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
     <script src="unity-webview.js"></script>
@@ -32,7 +31,7 @@
       const urlParams = new URLSearchParams(queryString);
       if(!urlParams.has('access_token'))
       {
-          window.location = window.location.origin + "/login.html";
+          window.location = "login.html";
       }
 
       var buildUrl = "Build";
